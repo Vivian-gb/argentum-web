@@ -30,7 +30,7 @@ node {
                 timeout(time: secondsToApproval, unit: 'SECONDS') {
                     input "Deploy to DEV?"
                 }
-            }				
+            },				
             steps {
                 sh '''
                     cp /jenkins/workspace/argentum-web-build/target/argentum-web.war /tomcat/DEV
@@ -45,7 +45,7 @@ node {
                 timeout(time: secondsToApproval, unit: 'SECONDS') {
                     input "Deploy to TI?"
                 }
-            }				
+            },				
             steps {
                 sh '''
                     cp /jenkins/workspace/argentum-web-build/target/argentum-web.war /tomcat/TI
