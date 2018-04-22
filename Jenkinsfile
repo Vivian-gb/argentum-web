@@ -16,7 +16,7 @@ node {
 
         stage('SonarQube analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
+                withSonarQubeEnv('Sonar Sascar') {
                     sh 'mvn sonar:sonar'
                 }
 		sh '''
@@ -30,8 +30,6 @@ node {
                 timeout(time: secondsToApproval, unit: 'SECONDS') {
                     input "Deploy to DEV?"
                 }
-            },				
-            steps {
                 sh '''
                     cp /jenkins/workspace/argentum-web-build/target/argentum-web.war /tomcat/DEV
                     curl 'http://vivian:password@tomcat_dev:8080/manager/text/reload?path=/argentum-web'
@@ -45,8 +43,6 @@ node {
                 timeout(time: secondsToApproval, unit: 'SECONDS') {
                     input "Deploy to TI?"
                 }
-            },				
-            steps {
                 sh '''
                     cp /jenkins/workspace/argentum-web-build/target/argentum-web.war /tomcat/TI
                     curl 'http://vivian:password@tomcat_ti:8889/manager/text/reload?path=/argentum-web'
