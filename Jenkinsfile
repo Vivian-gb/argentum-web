@@ -33,7 +33,7 @@ node {
 
 		stage('Deploy to QA') {
 			sh "cp /jenkins/workspace/argentum-web-build/target/argentum-web.war /tomcat/TI"
-                        sh "curl 'http://vivian:password@tomcat_dev:8889/manager/text/reload?path=/argentum-web'"
+                        sh "curl 'http://vivian:password@tomcat_ti:8889/manager/text/reload?path=/argentum-web'"
 		}
 
 	} catch (any) {
