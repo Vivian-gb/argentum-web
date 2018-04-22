@@ -28,7 +28,7 @@ node {
                 input "Deploy to DEV?"
             }
             sh '''
-                cp /jenkins/workspace/argentum-web-build/target/argentum-web.war /tomcat/DEV
+                cp target/argentum-web.war /tomcat/DEV
                 curl 'http://vivian:password@tomcat_dev:8080/manager/text/reload?path=/argentum-web'
                 echo "Deploy to DEV finished"
             '''
@@ -39,7 +39,7 @@ node {
                 input "Deploy to TI?"
             }
             sh '''
-                cp /jenkins/workspace/argentum-web-build/target/argentum-web.war /tomcat/TI
+                cp target/argentum-web.war /tomcat/TI
                 curl 'http://vivian:password@tomcat_ti:8889/manager/text/reload?path=/argentum-web'
                 echo "Deploy to TI finished"
             '''
