@@ -15,40 +15,34 @@ node {
         }
 
         stage('SonarQube analysis') {
-            steps {
-                withSonarQubeEnv('Sonar Sascar') {
-                    sh 'mvn sonar:sonar'
-                }
-		sh '''
-		    echo "Sonar finished"
-                '''
-            }
+	    withSonarQubeEnv('Sonar Sascar') {
+	        sh 'mvn sonar:sonar'
+    	    }
+	    sh '''
+	        echo "Sonar finished"
+	    '''
         }
 
-        stage('Deploy DEV') {				
-            steps {
-                timeout(time: secondsToApproval, unit: 'SECONDS') {
-                    input "Deploy to DEV?"
-                }
-                sh '''
-                    cp /jenkins/workspace/argentum-web-build/target/argentum-web.war /tomcat/DEV
-                    curl 'http://vivian:password@tomcat_dev:8080/manager/text/reload?path=/argentum-web'
-                    echo "Deploy to DEV finished"
-                '''
+        stage('Deploy DEV') {	
+            timeout(time: secondsToApproval, unit: 'SECONDS') {
+                input "Deploy to DEV?"
             }
+            sh '''
+                cp /jenkins/workspace/argentum-web-build/target/argentum-web.war /tomcat/DEV
+                curl 'http://vivian:password@tomcat_dev:8080/manager/text/reload?path=/argentum-web'
+                echo "Deploy to DEV finished"
+            '''
         }
 
-        stage('Deploy TI') {				
-            steps {
-                timeout(time: secondsToApproval, unit: 'SECONDS') {
-                    input "Deploy to TI?"
-                }
-                sh '''
-                    cp /jenkins/workspace/argentum-web-build/target/argentum-web.war /tomcat/TI
-                    curl 'http://vivian:password@tomcat_ti:8889/manager/text/reload?path=/argentum-web'
-                    echo "Deploy to TI finished"
-                '''
+        stage('Deploy TI') {
+            timeout(time: secondsToApproval, unit: 'SECONDS') {
+                input "Deploy to TI?"
             }
+            sh '''
+                cp /jenkins/workspace/argentum-web-build/target/argentum-web.war /tomcat/TI
+                curl 'http://vivian:password@tomcat_ti:8889/manager/text/reload?path=/argentum-web'
+                echo "Deploy to TI finished"
+            '''
         }
 
     } catch (any) {
