@@ -9,20 +9,6 @@ node {
 			// Marca a versão curta do commit atual
 			sh "git rev-parse --short HEAD > .git/commit-id"
 		}
-		
-		stage('Setup Build Version') {
-			def model = readMavenPom file: 'pom.xml'
-			def commitId = readFile('.git/commit-id')
-			def buildNumber = "${env.BUILD_NUMBER}"
-			def releaseVersion = model.version.replace("-SNAPSHOT", "")
-			def finalBuildVersion = releaseVersion + '-build.' + buildNumber + '.' + commitId
-			
-			echo 'POM Version found: ' + model.version
-			echo 'Build version defined: ' + finalBuildVersion
-			
-			sh "mvn versions:set -DnewVersion=" + finalBuildVersion
-			sh "mvn versions:commit"
-		} 
 
 		stage('Build') {
 			sh "mvn clean install"
